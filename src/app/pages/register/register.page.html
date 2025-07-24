@@ -1,15 +1,71 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>register</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true" class="register-content">
+  <div class="register-container">
+    <img src="assets/voting.png" alt="App Logo" class="register-logo" />
 
-<ion-content>
-  <form (ngSubmit)="onRegister()">
-    <ion-item><ion-input [(ngModel)]="fullName" name="fullName" placeholder="Full Name"></ion-input></ion-item>
-    <ion-item><ion-input [(ngModel)]="email" name="email" type="email" placeholder="Email"></ion-input></ion-item>
-    <ion-item><ion-input [(ngModel)]="password" name="password" type="password" placeholder="Password"></ion-input></ion-item>
-    <ion-item><ion-input [(ngModel)]="confirmPassword" name="confirmPassword" type="password" placeholder="Confirm Password"></ion-input></ion-item>
-    <ion-button expand="block" type="submit">Register</ion-button>
-  </form>
+    <ion-card class="register-card">
+      <form (ngSubmit)="onRegister()" #loginForm="ngForm">
+        <ion-card-header>
+          <ion-card-title class="ion-text-center">Daftar</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+          <ion-item lines="inset">
+            <ion-icon name="person-outline" slot="start"></ion-icon>
+            <ion-input
+              [(ngModel)]="fullName"
+              name="fullName"
+              type="text"
+              placeholder="Nama"
+              required
+            ></ion-input>
+          </ion-item>
+          <ion-item lines="inset">
+            <ion-icon name="mail-outline" slot="start"></ion-icon>
+            <ion-input
+              [(ngModel)]="email"
+              name="email"
+              type="email"
+              placeholder="Email"
+              required
+            ></ion-input>
+          </ion-item>
+
+          <ion-item lines="inset" class="ion-margin-top">
+            <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+            <ion-input
+              [(ngModel)]="password"
+              name="password"
+              type="password"
+              placeholder="Password"
+              required
+            ></ion-input>
+          </ion-item>
+
+          <ion-item lines="inset" class="ion-margin-top">
+            <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+            <ion-input
+              [(ngModel)]="confirmPassword"
+              type="password"
+              placeholder="Konfirmasi Password"
+              required
+            ></ion-input>
+          </ion-item>
+
+          <ion-button
+            expand="block"
+            class="ion-margin-top"
+            type="submit"
+            color="primary"
+            [disabled]="!loginForm.valid"
+          >
+            Daftar
+          </ion-button>
+
+          <ion-button expand="block" fill="clear" (click)="login()">
+            Kembali ke login
+          </ion-button>
+        </ion-card-content>
+      </form>
+    </ion-card>
+  </div>
 </ion-content>

@@ -2,15 +2,14 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonItem, IonButton } from '@ionic/angular/standalone';
+import { IonicModule } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
-
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonItem, IonButton]
+  imports: [IonicModule, FormsModule, CommonModule]
 })
 export class RegisterPage {
 
@@ -27,4 +26,8 @@ export class RegisterPage {
       .subscribe(() => this.router.navigate(['/home']));
   }
 
+
+  login() {
+    this.router.navigate(['/login'])
+  }
 }

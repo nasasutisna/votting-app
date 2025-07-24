@@ -5,12 +5,16 @@ import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuardService {
-
+export class VoteGuardService {
   constructor(private auth: AuthService, private router: Router) { }
   canActivate(): boolean {
-    if (this.auth.isAuthenticated()) {
-      this.router.navigate(['/home']);
+    if (!this.auth.isAuthenticated()) {
+      this.router.navigate(['/login']);
+      return false;
+    }
+
+    if (!this.auth.getIsAdmin()) {
+      this.router.navigate(['/login']);
       return false;
     }
 

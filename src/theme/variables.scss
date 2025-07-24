@@ -1,2 +1,16 @@
 // For information on how to create your own theme, please see:
 // http://ionicframework.com/docs/theming/
+:root {
+  --ion-color-primary: #fb7b36;                    /* Mangga utama */
+  --ion-color-primary-rgb: 251, 123, 54;           /* RGB dari fb7b36 */
+  --ion-color-primary-contrast: #ffffff;           /* Warna teks di atas warna mangga */
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+
+  --ion-color-primary-shade: #dd6c30;              /* Versi lebih gelap */
+  --ion-color-primary-tint: #fc8d50;               /* Versi lebih terang */
+
+  --ion-color-secondary: #60A5FA;
+  --ion-color-success: #10B981;
+  --ion-color-danger: #EF4444;
+  --ion-color-warning: #F59E0B;
+}

@@ -13,13 +13,17 @@ export interface User {
 })
 export class AuthService {
   private currentUser = signal<User | null>(null);
+  public isAdmin = signal<boolean | null>(null);
 
   login(email: string, password: string) {
     // Simulasi login
     console.log('password', password);
     const user = { id: '1', fullName: 'John Doe', email };
+    const isAdmin = email === 'admin';
     this.currentUser.set(user);
     localStorage.setItem('user', JSON.stringify(user));
+    localStorage.setItem('token', JSON.stringify(user));
+    localStorage.setItem('isAdmin', JSON.stringify(isAdmin));
     return of(user);
   }
 
@@ -31,6 +35,10 @@ export class AuthService {
   logout() {
     this.currentUser.set(null);
     localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    localStorage.removeItem('isAdmin');
+    this.getIsAdmin();
+    this.isAuthenticated();
   }
 
   getUser() {
@@ -38,6 +46,15 @@ export class AuthService {
   }
 
   isAuthenticated() {
-    return !!this.currentUser();
+     const token = localStorage.getItem('token');
+    return token;
+  }
+
+  getIsAdmin() {
+    const admin = localStorage.getItem('isAdmin');
+    console.log('isadmin', admin)
+    const isAdmin = admin ? JSON.parse(admin) === true : false;
+    this.isAdmin.set(isAdmin);
+    return isAdmin;
   }
 }

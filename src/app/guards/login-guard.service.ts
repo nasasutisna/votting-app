@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuardService {
+export class LoginGuardService {
 
   constructor(private auth: AuthService, private router: Router) { }
   canActivate(): boolean {
@@ -13,7 +13,6 @@ export class AuthGuardService {
       this.router.navigate(['/home']);
       return false;
     }
-
     return true;
   }
 }

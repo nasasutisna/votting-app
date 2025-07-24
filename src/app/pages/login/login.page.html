@@ -1,31 +1,49 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>{{ 'Login' }}</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true" class="login-content">
+  <div class="login-container">
+    <img src="assets/voting.png" alt="App Logo" class="login-logo" />
 
-<ion-content class="ion-padding">
-  <form (ngSubmit)="onLogin()" style="width: 50%; margin: 0 auto">
-    <ion-item class="ion-margin-bottom"
-      ><ion-input
-        [(ngModel)]="email"
-        name="email"
-        type="email"
-        placeholder="Email"
-      ></ion-input
-    ></ion-item>
-    <ion-item class="ion-margin-bottom"
-      ><ion-input
-        [(ngModel)]="password"
-        name="password"
-        type="password"
-        placeholder="Password"
-      ></ion-input
-    ></ion-item>
-    <ion-button expand="block" type="submit">Login</ion-button>
-    <ion-button (click)="register()" fill="clear">Register</ion-button>
-  </form>
+    <ion-card class="login-card">
+      <form (ngSubmit)="onLogin()" #loginForm="ngForm">
+        <ion-card-header>
+          <ion-card-title class="ion-text-center">Login</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+          <ion-item lines="inset">
+            <ion-icon name="mail-outline" slot="start"></ion-icon>
+            <ion-input
+              [(ngModel)]="email"
+              name="email"
+              type="email"
+              placeholder="Email"
+              required
+            ></ion-input>
+          </ion-item>
+
+          <ion-item lines="inset" class="ion-margin-top">
+            <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+            <ion-input
+              [(ngModel)]="password"
+              name="password"
+              type="password"
+              placeholder="Password"
+              required
+            ></ion-input>
+          </ion-item>
+
+          <ion-button
+            expand="block"
+            class="ion-margin-top"
+            type="submit"
+            color="primary"
+            [disabled]="!loginForm.valid"
+          >
+            Login
+          </ion-button>
+
+          <div class="ion-margin-top ion-margin-bottom">Belum punya akun? <span class="link" (click)="register()"> Daftar</span></div>
+        </ion-card-content>
+      </form>
+    </ion-card>
+  </div>
 </ion-content>
