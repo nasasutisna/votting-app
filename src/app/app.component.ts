@@ -27,12 +27,12 @@ export class AppComponent {
         this.appPages = [
           { title: 'Daftar Vote', url: '/vote', icon: 'home' },
           { title: 'Users', url: '/users', icon: 'person-outline' },
-          { title: 'Keluar', url: '/users', icon: 'log-out-outline' },
+          { title: 'Keluar', url: '/', icon: 'log-out-outline' },
         ];
       } else {
         this.appPages = [
           { title: 'Beranda', url: '/home', icon: 'home' },
-          { title: 'Keluar', url: '/users', icon: 'log-out-outline' },
+          { title: 'Keluar', url: '/', icon: 'log-out-outline' },
         ];
       }
     }, { allowSignalWrites: true })
