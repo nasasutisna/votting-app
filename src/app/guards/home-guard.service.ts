@@ -15,7 +15,7 @@ export class HomeGuardService {
     }
 
     if (this.auth.getIsAdmin()) {
-      this.router.navigate(['/vote']);
+      this.router.navigate(['/admin/vote']);
       return false;
     }
 

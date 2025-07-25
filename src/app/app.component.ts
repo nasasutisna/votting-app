@@ -25,8 +25,8 @@ export class AppComponent {
     effect(() => {
       if (this.auth.isAdmin()) {
         this.appPages = [
-          { title: 'Daftar Vote', url: '/vote', icon: 'home' },
-          { title: 'Users', url: '/users', icon: 'person-outline' },
+          { title: 'Daftar Vote', url: '/admin/vote', icon: 'home' },
+          { title: 'Users', url: '/admin/users', icon: 'person-outline' },
           { title: 'Keluar', url: '/logout', icon: 'log-out-outline' },
         ];
       } else {
