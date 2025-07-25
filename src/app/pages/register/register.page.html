@@ -13,6 +13,7 @@
             <ion-icon name="person-outline" slot="start"></ion-icon>
             <ion-input
               [(ngModel)]="fullName"
+              [ngModelOptions]="{'standalone':true}"
               name="fullName"
               type="text"
               placeholder="Nama"
@@ -23,6 +24,7 @@
             <ion-icon name="mail-outline" slot="start"></ion-icon>
             <ion-input
               [(ngModel)]="email"
+              [ngModelOptions]="{'standalone':true}"
               name="email"
               type="email"
               placeholder="Email"
@@ -34,6 +36,7 @@
             <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
             <ion-input
               [(ngModel)]="password"
+              [ngModelOptions]="{'standalone':true}"
               name="password"
               type="password"
               placeholder="Password"
@@ -45,6 +48,7 @@
             <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
             <ion-input
               [(ngModel)]="confirmPassword"
+              [ngModelOptions]="{'standalone':true}"
               type="password"
               placeholder="Konfirmasi Password"
               required
