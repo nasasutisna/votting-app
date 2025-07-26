@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class BaseApiService {
-
+  private readonly baseUrl = 'http://localhost:8000/api/v1';
   constructor(private httpClient: HttpClient) { }
 
   httpGet<T>(url: string, queryParams?: any) {
@@ -21,13 +21,15 @@ export class BaseApiService {
   }
 
   httpPut<T>(url: string, body: any) {
+    const apiUrl = this.createUrl(url);
     const headers = this.createHeaders();
-    return this.httpClient.put<T>(url, body, { headers });
+    return this.httpClient.put<T>(apiUrl, body, { headers });
   }
 
   httpDelete<T>(url: string) {
+    const apiUrl = this.createUrl(url);
     const headers = this.createHeaders();
-    return this.httpClient.delete<T>(url, { headers });
+    return this.httpClient.delete<T>(apiUrl, { headers });
   }
 
   httpPatch<T>(url: string, body?: any, queryParams?: any) {
@@ -42,7 +44,7 @@ export class BaseApiService {
       apiUrl = `${url}?${this.jsonToQueryString(queryParams)}`;
     }
 
-    return apiUrl;
+    return `${this.baseUrl}/${apiUrl}`;
   }
 
   private jsonToQueryString(params: Record<string, any>): string {
@@ -59,6 +61,10 @@ export class BaseApiService {
 
   createHeaders() {
     const token = localStorage.getItem('token') as string;
-    return new HttpHeaders().set('Authorization', token);
+    if (token) {
+      return new HttpHeaders().set('Authorization', token);
+    }
+
+    return new HttpHeaders();
   }
 }

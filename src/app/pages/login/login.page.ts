@@ -26,7 +26,6 @@ export class LoginPage implements OnInit {
 
   onLogin() {
     this.auth.login(this.email, this.password);
-    this.router.navigate(['/home'])
   }
 
   register() {

@@ -1,5 +1,8 @@
-import { Injectable, signal } from '@angular/core';
-import { of } from 'rxjs';
+import { inject, Injectable, signal } from '@angular/core';
+import { firstValueFrom, of } from 'rxjs';
+import { AuthApiService } from './api/auth-api/auth-api.service';
+import { RequestLoginDto } from './api/auth-api/auth.dto';
+import { Router } from '@angular/router';
 
 export interface User {
   id: string;
@@ -12,19 +15,24 @@ export interface User {
   providedIn: 'root'
 })
 export class AuthService {
-  private currentUser = signal<User | null>(null);
+  private currentUser = signal<any | null>(null);
   public isAdmin = signal<boolean | null>(null);
 
-  login(email: string, password: string) {
-    // Simulasi login
-    console.log('password', password);
-    const user = { id: '1', fullName: 'John Doe', email };
-    const isAdmin = email === 'admin';
-    this.currentUser.set(user);
-    localStorage.setItem('user', JSON.stringify(user));
-    localStorage.setItem('token', JSON.stringify(user));
-    localStorage.setItem('isAdmin', JSON.stringify(isAdmin));
-    return of(user);
+  readonly authApi = inject(AuthApiService);
+  readonly router = inject(Router);
+
+  async login(email: string, password: string) {
+    try {
+      const body: RequestLoginDto = { email, password };
+      const result = await firstValueFrom(this.authApi.login(body));
+      localStorage.setItem('user', JSON.stringify(result));
+      localStorage.setItem('token', JSON.stringify(result.token));
+      localStorage.setItem('isAdmin', JSON.stringify(result.data.role === 'admin'));
+      this.currentUser.set(result.data);
+      this.router.navigate(['/home'])
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   register(data: { fullName: string; email: string; password: string }) {
@@ -46,7 +54,7 @@ export class AuthService {
   }
 
   isAuthenticated() {
-     const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token');
     return token;
   }
 

@@ -22,8 +22,8 @@ export class RegisterPage {
 
   onRegister() {
     if (this.password !== this.confirmPassword) return;
-    this.auth.register({ fullName: this.fullName, email: this.email, password: this.password })
-      .subscribe(() => this.router.navigate(['/home']));
+    // this.auth.register({ fullName: this.fullName, email: this.email, password: this.password })
+    //   .subscribe(() => this.router.navigate(['/home']));
   }
 
 
