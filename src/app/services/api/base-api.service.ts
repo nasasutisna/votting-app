@@ -63,9 +63,9 @@ export class BaseApiService {
     const token = localStorage.getItem('token') as string;
     if (token) {
       const authorization = JSON.parse(token)
-      return new HttpHeaders().set('Authorization', authorization);
+      return new HttpHeaders().set('Authorization', authorization)
+    } else {
+      return new HttpHeaders().set('decryptedPass', 'true');
     }
-
-    return new HttpHeaders();
   }
 }
