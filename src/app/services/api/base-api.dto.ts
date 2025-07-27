@@ -1,6 +1,8 @@
 export interface RequestPagingDto {
   limit: number;
   page: number;
+  search?: string;
+  votedActive?: boolean;
 }
 
 export interface ResponseData<T> {

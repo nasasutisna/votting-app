@@ -1,0 +1,114 @@
+<app-header title="Polling" />
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <h2>Polling List</h2>
+    </div>
+
+    <div class="toolbar-right">
+      @if(authService.isAdmin()){
+      <ion-button slot="end" fill="clear" (click)="onAdd()"
+        >+ Add New</ion-button
+      >
+      }
+      <ion-searchbar
+        mode="ios"
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="handleSearch($event)"
+        [debounce]="1000"
+        placeholder="Search..."
+        class="searchbar"
+      ></ion-searchbar>
+    </div>
+  </div>
+  <cdk-table [dataSource]="dataSource" class="table" [trackBy]="trackById">
+    <ng-container cdkColumnDef="index">
+      <cdk-header-cell *cdkHeaderCellDef>No.</cdk-header-cell>
+      <cdk-cell *cdkCellDef="let element; let i = index">
+        {{ i + 1 }}
+      </cdk-cell>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container cdkColumnDef="name">
+      <cdk-header-cell *cdkHeaderCellDef> Name </cdk-header-cell>
+      <cdk-cell *cdkCellDef="let element"> {{ element.name }} </cdk-cell>
+    </ng-container>
+
+    <!-- Question Column -->
+    <ng-container cdkColumnDef="question">
+      <cdk-header-cell *cdkHeaderCellDef> Question </cdk-header-cell>
+      <cdk-cell *cdkCellDef="let element"> {{ element.question }} </cdk-cell>
+    </ng-container>
+
+    <!-- Deadline Column -->
+    <ng-container cdkColumnDef="deadlineVote">
+      <cdk-header-cell *cdkHeaderCellDef> Deadline </cdk-header-cell>
+      <cdk-cell *cdkCellDef="let element">
+        {{ element.deadlineVote | date:'medium' }}
+      </cdk-cell>
+    </ng-container>
+
+    <!-- IsActive Column -->
+    <ng-container cdkColumnDef="isActived">
+      <cdk-header-cell *cdkHeaderCellDef> Active </cdk-header-cell>
+      <cdk-cell *cdkCellDef="let element">
+        <ion-chip color="{{ element.isActived ? 'success' : 'danger' }}">
+          {{ element.isActived ? 'Yes' : 'No' }}
+        </ion-chip>
+      </cdk-cell>
+    </ng-container>
+
+    <!-- Actions Column -->
+    <ng-container cdkColumnDef="actions">
+      <cdk-header-cell *cdkHeaderCellDef> Actions </cdk-header-cell>
+      <cdk-cell *cdkCellDef="let element">
+        @if(authService.isAdmin()){
+        <div class="actions">
+          <ion-button fill="clear" size="small" (click)="onEdit(element)"
+            >Edit</ion-button
+          >
+          <ion-button
+            fill="clear"
+            color="danger"
+            size="small"
+            (click)="onDelete(element)"
+            >Delete</ion-button
+          >
+        </div>
+        } @else { @if( element?.isActived) {
+        <ion-button
+          fill="clear"
+          color="primary"
+          size="small"
+          (click)="onVote(element)"
+          >Vote</ion-button
+        >
+        } @else {
+        <ion-button
+          fill="clear"
+          color="primary"
+          size="small"
+          (click)="onDelete(element)"
+          >View Result</ion-button
+        >
+        } }
+      </cdk-cell>
+    </ng-container>
+
+    <!-- Render Header and Row -->
+    <cdk-header-row *cdkHeaderRowDef="displayedColumns"></cdk-header-row>
+    <cdk-row *cdkRowDef="let row; columns: displayedColumns;"></cdk-row>
+
+    <!-- Empty State -->
+    @if(dataSource.length) {
+    <div class="empty-state">
+      <ion-icon
+        name="folder-open-outline"
+        style="font-size: 24px; opacity: 0.5"
+      ></ion-icon>
+      <p style="margin-top: 8px; opacity: 0.6">Data not found</p>
+    </div>
+    }
+  </cdk-table>
+</ion-content>

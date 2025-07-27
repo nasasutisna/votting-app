@@ -1,0 +1,66 @@
+<ion-content [fullscreen]="true">
+  <ion-card-header>
+    <ion-card-title class="ion-text-center">Create Polling</ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content>
+    <ion-item lines="inset">
+      <ion-label position="stacked">Name</ion-label>
+      <ion-input
+        [(ngModel)]="formData.name"
+        type="text"
+        placeholder="Type in here..."
+        required
+      ></ion-input>
+    </ion-item>
+
+    <ion-item lines="inset" class="ion-margin-top">
+      <ion-label position="stacked">Question</ion-label>
+      <ion-input
+        [(ngModel)]="formData.question"
+        placeholder="Type in here..."
+        required
+      ></ion-input>
+    </ion-item>
+
+    <ion-item lines="inset" class="ion-margin-top">
+      <ion-label position="stacked">Deadline</ion-label>
+      <ion-input
+        [(ngModel)]="formData.deadlineVote"
+        placeholder="Type in here..."
+        type="datetime-local"
+        required
+      ></ion-input>
+    </ion-item>
+
+    <ion-item lines="inset" class="ion-margin-top">
+      <ion-label position="stacked">Options</ion-label>
+      <div class="options" *ngFor="let item of formData.options; let i = index">
+        <ion-input
+          class="input-option"
+          [(ngModel)]="item.name"
+          placeholder="Type in here..."
+          type="text"
+          required
+        ></ion-input>
+        @if(formData.options.length > 1) {
+        <div class="remove" (click)="removeOption(i)">Remove</div>
+        }
+      </div>
+
+      <ion-button fill="clear" (click)="addOption()" class="ion-margin-top"
+        >+ Add Option</ion-button
+      >
+    </ion-item>
+
+    <ion-button
+      expand="block"
+      class="ion-margin-top"
+      type="submit"
+      color="primary"
+      (click)="save()"
+    >
+      Save
+    </ion-button>
+  </ion-card-content>
+</ion-content>

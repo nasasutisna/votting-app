@@ -1,8 +1,10 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { firstValueFrom, of } from 'rxjs';
 import { AuthApiService } from './api/auth-api/auth-api.service';
-import { RequestLoginDto } from './api/auth-api/auth.dto';
+import { RequestLoginDto, RequestRegisterDto } from './api/auth-api/auth.dto';
 import { Router } from '@angular/router';
+import { LoadingService } from './loading.service';
+import { AlertService } from './alert.service';
 
 export interface User {
   id: string;
@@ -15,6 +17,9 @@ export interface User {
   providedIn: 'root'
 })
 export class AuthService {
+  readonly loadingService = inject(LoadingService);
+  readonly alertService = inject(AlertService);
+
   private currentUser = signal<any | null>(null);
   public isAdmin = signal<boolean | null>(null);
 
@@ -23,6 +28,7 @@ export class AuthService {
 
   async login(email: string, password: string) {
     try {
+      await this.loadingService.showLoading();
       const body: RequestLoginDto = { email, password };
       const result = await firstValueFrom(this.authApi.login(body));
       localStorage.setItem('user', JSON.stringify(result));
@@ -30,14 +36,24 @@ export class AuthService {
       localStorage.setItem('isAdmin', JSON.stringify(result.data.role === 'admin'));
       this.currentUser.set(result.data);
       this.router.navigate(['/home'])
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      this.alertService.presentAlertError(error?.error?.message);
+    } finally {
+      this.loadingService.hideLoading();
     }
   }
 
-  register(data: { fullName: string; email: string; password: string }) {
-    // Simulasi register langsung login
-    return this.login(data.email, data.password);
+  async register(body: RequestRegisterDto) {
+    try {
+      await this.loadingService.showLoading();
+      await firstValueFrom(this.authApi.register(body));
+      this.alertService.presentAlertSuccess('Register Successfully');
+      this.router.navigate(['/login']);
+    } catch (error: any) {
+      this.alertService.presentAlertError(error?.error?.message);
+    } finally {
+      this.loadingService.hideLoading();
+    }
   }
 
   logout() {

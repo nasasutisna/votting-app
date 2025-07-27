@@ -25,6 +25,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/home/home.page').then(m => m.HomePage)
   },
   {
+    path: 'polling',
+    loadComponent: () => import('./pages/polling/polling.page').then(m => m.PollingPage)
+  },
+  {
     path: 'admin',
     canActivate: [adminGuard],
     children: [{
@@ -39,5 +43,17 @@ export const routes: Routes = [
       path: 'vote',
       loadComponent: () => import('./pages/vote/vote.page').then(m => m.VotePage)
     }]
+  },
+  {
+    path: 'polling-create',
+    loadComponent: () => import('./pages/polling/polling-create/polling-create.page').then( m => m.PollingCreatePage)
+  },
+  {
+    path: 'polling-vote',
+    loadComponent: () => import('./pages/polling/polling-vote/polling-vote.page').then( m => m.PollingVotePage)
+  },
+  {
+    path: 'polling-add-options',
+    loadComponent: () => import('./pages/polling/polling-add-options/polling-add-options.page').then( m => m.PollingAddOptionsPage)
   },
 ];

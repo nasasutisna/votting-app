@@ -3,6 +3,7 @@ import { Component, model, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HeaderComponent } from 'src/app/shared/components/header/header.component';
 import { IonicModule } from '@ionic/angular';
+import { PollingVotePage } from '../polling/polling-vote/polling-vote.page';
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
@@ -13,7 +14,8 @@ import { IonicModule } from '@ionic/angular';
     FormsModule,
     HeaderComponent,
     IonicModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    PollingVotePage
   ]
 })
 export class HomePage {

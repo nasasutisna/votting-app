@@ -1,0 +1,21 @@
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-item lines="inset">
+    <ion-label position="stacked">Name</ion-label>
+    <ion-input
+      [(ngModel)]="formData.name"
+      type="text"
+      placeholder="Type in here..."
+      required
+    ></ion-input>
+  </ion-item>
+
+  <ion-button
+    expand="block"
+    class="ion-margin-top"
+    type="submit"
+    color="primary"
+    (click)="save()"
+  >
+    Save
+  </ion-button>
+</ion-content>

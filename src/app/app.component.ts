@@ -25,14 +25,15 @@ export class AppComponent {
     effect(() => {
       if (this.auth.isAdmin()) {
         this.appPages = [
-          { title: 'Daftar Vote', url: '/admin/vote', icon: 'home' },
+          { title: 'Polling', url: '/admin/vote', icon: 'home' },
           { title: 'Users', url: '/admin/users', icon: 'person-outline' },
-          { title: 'Keluar', url: '/logout', icon: 'log-out-outline' },
+          { title: 'Log Out', url: 'logout', icon: 'log-out-outline' },
         ];
       } else {
         this.appPages = [
-          { title: 'Beranda', url: '/home', icon: 'home' },
-          { title: 'Keluar', url: '/logout', icon: 'log-out-outline' },
+          { title: 'Home', url: '/home', icon: 'home' },
+          { title: 'Polling', url: '/polling', icon: 'pie-chart-outline' },
+          { title: 'Log Out', url: 'logout', icon: 'log-out-outline' },
         ];
       }
     }, { allowSignalWrites: true })
@@ -40,9 +41,7 @@ export class AppComponent {
   }
 
   openPage(page: any) {
-    console.log(page)
-    if (page?.title === 'Keluar') {
-      console.log('masuk')
+    if (page?.url === 'logout') {
       this.auth.logout();
       this.router.navigate(['/login']);
       return;

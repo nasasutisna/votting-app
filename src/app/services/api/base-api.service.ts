@@ -62,7 +62,8 @@ export class BaseApiService {
   createHeaders() {
     const token = localStorage.getItem('token') as string;
     if (token) {
-      return new HttpHeaders().set('Authorization', token);
+      const authorization = JSON.parse(token)
+      return new HttpHeaders().set('Authorization', authorization);
     }
 
     return new HttpHeaders();

@@ -1,5 +1,8 @@
-import { Injectable } from '@angular/core';
-import { of, throwError } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { firstValueFrom, of, Subject, throwError } from 'rxjs';
+import { PollApiService } from './api/poll-api/poll-api.service';
+import { RequestPagingDto } from './api/base-api.dto';
+import { RequestAddOptionDto, RequestAddPollDto, RequestPollDto } from './api/poll-api/poll.dto';
 
 export interface Vote {
   id: string;
@@ -19,6 +22,9 @@ export interface UserVote {
   providedIn: 'root'
 })
 export class VoteService {
+  readonly pollApiService = inject(PollApiService);
+
+  public loadList$ = new Subject<void>();
 
   private voteData: Vote = {
     id: 'vote1',
@@ -29,6 +35,18 @@ export class VoteService {
 
   private userVotes = new Map<string, string>(); // userId -> selectedOption
 
+  getListPoll(queryParams: RequestPagingDto) {
+    return firstValueFrom(this.pollApiService.pollList(queryParams));
+  }
+
+  addPoll(body: RequestAddPollDto) {
+    return firstValueFrom(this.pollApiService.addPoll(body));
+  }
+
+  addOption(id: any, body: RequestAddOptionDto) {
+    return firstValueFrom(this.pollApiService.addOption(id, body));
+  }
+
   getVote() {
     return of(this.voteData);
   }
@@ -37,11 +55,7 @@ export class VoteService {
     return of(this.userVotes.get(userId));
   }
 
-  submitVote(userId: string, option: string) {
-    if (!this.voteData.isClosed) {
-      this.userVotes.set(userId, option);
-      return of(true);
-    }
-    return throwError(() => new Error('Voting closed'));
+  vote(body: RequestPollDto) {
+    return firstValueFrom(this.pollApiService.vote(body));
   }
 }

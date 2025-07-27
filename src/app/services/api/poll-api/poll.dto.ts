@@ -1,14 +1,14 @@
 
 export interface RequestPollDto {
   pollId: string;
-  optionId: number;
+  optionId: string;
 }
 
 export interface RequestAddOptionDto {
   name: string;
 }
 
-export interface Option {
+export interface OptionAdd {
 	name: string;
 }
 
@@ -16,7 +16,7 @@ export interface RequestAddPollDto {
 	name: string;
 	question: string;
 	deadlineVote: string;
-	options: Option[];
+	options: OptionAdd[];
 }
 
 export interface UsersVoted {

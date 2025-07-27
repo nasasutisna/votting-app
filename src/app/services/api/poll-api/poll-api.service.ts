@@ -7,11 +7,11 @@ import { RequestPagingDto, ResponseData, ResponsePagingDto } from '../base-api.d
   providedIn: 'root'
 })
 export class PollApiService {
-  private readonly model = 'auth';
+  private readonly model = 'poll';
   constructor(private baseApiService: BaseApiService) { }
 
   vote(body: RequestPollDto) {
-    const url = `${this.model}/vote`;
+    const url = `${this.model}/voted`;
     return this.baseApiService.httpPost(url, body);
   }
 
