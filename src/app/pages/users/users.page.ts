@@ -29,7 +29,7 @@ export class UsersPage implements OnInit, OnDestroy {
   displayedColumns = ['index', 'name', 'email', 'role', 'actions'];
   dataSource: ResponseGetUsersDto[] = [];
   searchTerm = '';
-  queryParams: RequestPagingDto = { page: 1, limit: 5 };
+  queryParams: RequestPagingDto = { page: 1, limit: 10 };
   destroy$ = new Subject<void>();
   totalPage = 1;
   currentPage = 0;

@@ -23,6 +23,7 @@ export class AppComponent {
 
   constructor() {
     effect(() => {
+      this.auth.getIsAdmin();
       if (this.auth.isAdmin()) {
         this.appPages = [
           { title: 'Polling', url: '/admin/polling', icon: 'home' },

@@ -35,7 +35,7 @@ export class PollingPage implements OnInit, OnDestroy {
 
   public displayedColumns = ['index', 'name', 'question', 'deadlineVote', 'isActived', 'actions'];
   public dataSource: ResponsePollListDto[] = [];
-  public queryParams: RequestPagingDto = { page: 1, limit: 50, search: '' }
+  public queryParams: RequestPagingDto = { page: 1, limit: 10, search: '' }
   public searchTerm = '';
 
   public destroy$ = new Subject<void>();

@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  SECRET_CRYPTO: 'feri@2025!!!'
+  SECRET_CRYPTO: 'votingwebapp072025'
 };
 
 /*

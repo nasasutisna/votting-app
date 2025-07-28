@@ -33,7 +33,7 @@ export class AuthService {
       await this.loadingService.showLoading();
       const encryptPassword = CryptoJS.AES.encrypt(password, environment.SECRET_CRYPTO).toString();
       console.log('encryptPassword', encryptPassword)
-      const body: RequestLoginDto = { email, password };
+      const body: RequestLoginDto = { email, password: encryptPassword };
       const result = await firstValueFrom(this.authApi.login(body));
       localStorage.setItem('user', JSON.stringify(result));
       localStorage.setItem('token', JSON.stringify(result.token));
@@ -61,6 +61,10 @@ export class AuthService {
   }
 
   logout() {
+    try {
+      firstValueFrom(this.authApi.logout())
+    } catch (_) { }
+
     this.currentUser.set(null);
     localStorage.removeItem('user');
     localStorage.removeItem('token');
@@ -80,7 +84,6 @@ export class AuthService {
 
   getIsAdmin() {
     const admin = localStorage.getItem('isAdmin');
-    console.log('isadmin', admin)
     const isAdmin = admin ? JSON.parse(admin) === true : false;
     this.isAdmin.set(isAdmin);
     return isAdmin;

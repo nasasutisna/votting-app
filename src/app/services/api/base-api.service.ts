@@ -65,7 +65,7 @@ export class BaseApiService {
       const authorization = JSON.parse(token)
       return new HttpHeaders().set('Authorization', authorization)
     } else {
-      return new HttpHeaders().set('decryptedPass', 'true');
+      return new HttpHeaders();
     }
   }
 }
