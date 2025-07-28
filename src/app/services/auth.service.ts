@@ -5,6 +5,8 @@ import { RequestLoginDto, RequestRegisterDto } from './api/auth-api/auth.dto';
 import { Router } from '@angular/router';
 import { LoadingService } from './loading.service';
 import { AlertService } from './alert.service';
+import * as CryptoJS from 'crypto-js';
+import { environment } from 'src/environments/environment';
 
 export interface User {
   id: string;
@@ -29,6 +31,8 @@ export class AuthService {
   async login(email: string, password: string) {
     try {
       await this.loadingService.showLoading();
+      const encryptPassword = CryptoJS.AES.encrypt(password, environment.SECRET_CRYPTO).toString();
+      console.log('encryptPassword', encryptPassword)
       const body: RequestLoginDto = { email, password };
       const result = await firstValueFrom(this.authApi.login(body));
       localStorage.setItem('user', JSON.stringify(result));

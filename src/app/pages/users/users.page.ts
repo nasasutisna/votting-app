@@ -29,8 +29,10 @@ export class UsersPage implements OnInit, OnDestroy {
   displayedColumns = ['index', 'name', 'email', 'role', 'actions'];
   dataSource: ResponseGetUsersDto[] = [];
   searchTerm = '';
-  queryParams: RequestPagingDto = { page: 1, limit: 50 };
+  queryParams: RequestPagingDto = { page: 1, limit: 5 };
   destroy$ = new Subject<void>();
+  totalPage = 1;
+  currentPage = 0;
 
   ngOnInit() {
     this.getUsers();
@@ -45,11 +47,28 @@ export class UsersPage implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  nextPage() {
+    if (this.currentPage < this.totalPage - 1) {
+      this.queryParams.page++;
+      this.getUsers();
+      this.currentPage++;
+    }
+  }
+
+  prevPage() {
+    if (this.currentPage > 0) {
+      this.queryParams.page--;
+      this.getUsers();
+      this.currentPage--;
+    }
+  }
+
   async getUsers() {
     try {
       await this.loadingService.showLoading();
       const result = await this.usersService.getUsers(this.queryParams);
       this.dataSource = result.data;
+      this.totalPage = result.totalPage;
     } catch (error: any) {
       this.alertService.presentAlertError(error?.error?.message)
     } finally {

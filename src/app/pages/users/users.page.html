@@ -65,10 +65,23 @@
     <!-- Render Header and Row -->
     <cdk-header-row *cdkHeaderRowDef="displayedColumns"></cdk-header-row>
     <cdk-row *cdkRowDef="let row; columns: displayedColumns;"></cdk-row>
-
-    <!-- Empty State -->
-    @if(dataSource.length) {
-    <app-empty-state></app-empty-state>
-    }
   </cdk-table>
+
+  @if(!dataSource.length) {
+  <app-empty-state></app-empty-state>
+  }
+  <div class="pagination">
+    <ion-button fill="clear" (click)="prevPage()" [disabled]="currentPage === 0"
+      >Prev</ion-button
+    >
+    <ion-label color="medium"
+      >Page {{ currentPage + 1 }} / {{ totalPage }}</ion-label
+    >
+    <ion-button
+      fill="clear"
+      (click)="nextPage()"
+      [disabled]="currentPage >= totalPage - 1"
+      >Next</ion-button
+    >
+  </div>
 </ion-content>

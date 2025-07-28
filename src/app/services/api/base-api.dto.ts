@@ -14,5 +14,6 @@ export interface ResponsePagingDto<T> {
   message: string;
   page: number;
   limit: number;
+  totalPage: number;
   data: T[];
 }

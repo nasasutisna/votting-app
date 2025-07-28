@@ -17,6 +17,7 @@ import { PollingVotePage } from './polling-vote/polling-vote.page';
 import dayjs from 'dayjs';
 import { EmptyStateComponent } from 'src/app/shared/components/empty-state/empty-state.component';
 import { PollingViewResultPage } from './polling-view-result/polling-view-result.page';
+import { PollingAddOptionsPage } from './polling-add-options/polling-add-options.page';
 
 @Component({
   selector: 'app-polling',
@@ -39,18 +40,22 @@ export class PollingPage implements OnInit, OnDestroy {
 
   public destroy$ = new Subject<void>();
 
+  totalPage = 1;
   currentPage = 0;
-  totalPages = 1;
 
   nextPage() {
-    if (this.currentPage < this.totalPages - 1) {
+    if (this.currentPage < this.totalPage - 1) {
       this.currentPage++;
+      this.queryParams.page++;
+      this.getPollingList();
     }
   }
 
   prevPage() {
     if (this.currentPage > 0) {
       this.currentPage--;
+      this.queryParams.page--;
+      this.getPollingList();
     }
   }
 
@@ -68,7 +73,7 @@ export class PollingPage implements OnInit, OnDestroy {
     try {
       await this.loadingService.showLoading();
       const result = await this.voteService.getListPoll(this.queryParams);
-      this.totalPages = result.page;
+      this.totalPage = result.totalPage;
       this.dataSource = result.data.map(item => {
         item.deadlineVote = dayjs(item.deadlineVote).format('DD, MMMM YYYY HH:mm')
         return item;
@@ -110,7 +115,6 @@ export class PollingPage implements OnInit, OnDestroy {
 
   onAdd() {
     this.modalService.openModal(PollingCreatePage);
-    // Konfirmasi dan hapus data
   }
 
   trackById(index: number, item: ResponsePollListDto) {
@@ -122,7 +126,10 @@ export class PollingPage implements OnInit, OnDestroy {
   }
 
   onViewResult(id: string) {
-    console.log(id)
     this.modalService.openModal(PollingViewResultPage, { id })
+  }
+
+  onAddOptions(id: string) {
+    this.modalService.openModal(PollingAddOptionsPage, { id })
   }
 }
