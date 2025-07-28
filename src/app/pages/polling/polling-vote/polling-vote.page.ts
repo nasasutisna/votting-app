@@ -28,7 +28,7 @@ export class PollingVotePage implements OnInit, OnDestroy {
   readonly authService = inject(AuthService);
   readonly modalService = inject(ModalService);
 
-  selectedOptionId = model<string | null>(null);
+  selectedOptionId = model<number | null>(null);
   hasVoted = false;
   isEditing = false;
   dataSource!: ResponsePollListDto | null;
@@ -56,8 +56,11 @@ export class PollingVotePage implements OnInit, OnDestroy {
   async getDetailPoll() {
     try {
       await this.loadingService.showLoading();
+      const user = this.authService.getUser();
       const result = await this.voteService.getDetail(this.params?._id);
       this.dataSource = result.data;
+      const selectedOptionId = this.dataSource.voted.find(fi => fi.userId === user?._id)?.optionId || 0;
+      this.selectedOptionId.set(selectedOptionId);
     } catch (error: any) {
       this.alertService.presentAlertError(error?.error?.message);
     } finally {

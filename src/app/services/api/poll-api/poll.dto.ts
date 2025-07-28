@@ -1,7 +1,7 @@
 
 export interface RequestPollDto {
   pollId: string;
-  optionId: string;
+  optionId: number;
 }
 
 export interface RequestAddOptionDto {

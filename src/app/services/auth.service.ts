@@ -7,6 +7,7 @@ import { LoadingService } from './loading.service';
 import { AlertService } from './alert.service';
 import * as CryptoJS from 'crypto-js';
 import { environment } from 'src/environments/environment';
+import { ResponseGetUsersDto } from './api/user-api/user.dto';
 
 export interface User {
   id: string;
@@ -22,7 +23,7 @@ export class AuthService {
   readonly loadingService = inject(LoadingService);
   readonly alertService = inject(AlertService);
 
-  private currentUser = signal<any | null>(null);
+  private currentUser = signal<ResponseGetUsersDto | null>(null);
   public isAdmin = signal<boolean | null>(null);
 
   readonly authApi = inject(AuthApiService);
@@ -31,7 +32,7 @@ export class AuthService {
   async login(email: string, password: string) {
     try {
       await this.loadingService.showLoading();
-      const encryptPassword = CryptoJS.AES.encrypt(password, environment.SECRET_CRYPTO).toString();
+      const encryptPassword = this.encryptPassword(password)
       console.log('encryptPassword', encryptPassword)
       const body: RequestLoginDto = { email, password: encryptPassword };
       const result = await firstValueFrom(this.authApi.login(body));
@@ -60,6 +61,10 @@ export class AuthService {
     }
   }
 
+  encryptPassword(text: string) {
+    return CryptoJS.AES.encrypt(text, environment.SECRET_CRYPTO).toString();
+  }
+
   logout() {
     try {
       firstValueFrom(this.authApi.logout())
@@ -74,6 +79,9 @@ export class AuthService {
   }
 
   getUser() {
+    const getUser = localStorage.getItem('user');
+    const user = getUser ? JSON.parse(getUser) : null;
+    this.currentUser.set(user?.data);
     return this.currentUser();
   }
 
