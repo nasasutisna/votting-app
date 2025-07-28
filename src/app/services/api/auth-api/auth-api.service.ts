@@ -13,7 +13,7 @@ export class AuthApiService {
 
   register(body: RequestRegisterDto) {
     const url = `${this.model}/register`;
-    return this.baseApiService.httpPost(url, body);
+    return this.baseApiService.httpPost<ResponseLoginDto>(url, body);
   }
 
   login(body: RequestLoginDto) {
