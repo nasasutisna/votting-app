@@ -35,8 +35,8 @@ export class PollingAddOptionsPage implements OnInit {
       await this.voteService.addOption(this.id, this.formData);
       await this.loadingService.hideLoading();
 
+      await this.alertSerice.presentAlertSuccess('Successfully Add Options');
       this.voteService.loadList$.next();
-      this.alertSerice.presentAlertSuccess('Successfully Add Options');
       this.modalService.dismiss();
     } catch (error: any) {
       this.alertSerice.presentAlertError(error?.error?.message)

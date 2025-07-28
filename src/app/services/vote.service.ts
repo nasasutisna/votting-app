@@ -58,4 +58,16 @@ export class VoteService {
   vote(body: RequestPollDto) {
     return firstValueFrom(this.pollApiService.vote(body));
   }
+
+  getResult(id: string) {
+    return firstValueFrom(this.pollApiService.getResult(id));
+  }
+
+  getDetail(id: string) {
+    return firstValueFrom(this.pollApiService.getDetail(id));
+  }
+
+  deletePoll(id: string) {
+    return firstValueFrom(this.pollApiService.deletePoll(id));
+  }
 }

@@ -30,7 +30,7 @@ export class RegisterPage {
 
   onRegister() {
     if (this.password !== this.confirmPassword) {
-      this.alertService.presentAlertError('Confirm Password not match');
+      this.alertService.presentAlertError('Password confirmation not match');
       return;
     }
 

@@ -25,14 +25,14 @@ export class AppComponent {
     effect(() => {
       if (this.auth.isAdmin()) {
         this.appPages = [
-          { title: 'Polling', url: '/admin/vote', icon: 'home' },
+          { title: 'Polling', url: '/admin/polling', icon: 'home' },
           { title: 'Users', url: '/admin/users', icon: 'person-outline' },
           { title: 'Log Out', url: 'logout', icon: 'log-out-outline' },
         ];
       } else {
         this.appPages = [
           { title: 'Home', url: '/home', icon: 'home' },
-          { title: 'Polling', url: '/polling', icon: 'pie-chart-outline' },
+          { title: 'Polling', url: '/admin/polling', icon: 'pie-chart-outline' },
           { title: 'Log Out', url: 'logout', icon: 'log-out-outline' },
         ];
       }

@@ -5,7 +5,7 @@
     <ion-card class="register-card">
       <form (ngSubmit)="onRegister()" #loginForm="ngForm">
         <ion-card-header>
-          <ion-card-title class="ion-text-center">Daftar</ion-card-title>
+          <ion-card-title class="ion-text-center">Register</ion-card-title>
         </ion-card-header>
 
         <ion-card-content>
@@ -16,7 +16,7 @@
               [ngModelOptions]="{'standalone':true}"
               name="fullName"
               type="text"
-              placeholder="Nama"
+              placeholder="Full Name"
               required
             ></ion-input>
           </ion-item>
@@ -50,7 +50,7 @@
               [(ngModel)]="confirmPassword"
               [ngModelOptions]="{'standalone':true}"
               type="password"
-              placeholder="Konfirmasi Password"
+              placeholder="Password Confirmation"
               required
             ></ion-input>
           </ion-item>
@@ -62,11 +62,11 @@
             color="primary"
             [disabled]="!loginForm.valid"
           >
-            Daftar
+            Register
           </ion-button>
 
           <ion-button expand="block" fill="clear" (click)="login()">
-            Kembali ke login
+            Back to login
           </ion-button>
         </ion-card-content>
       </form>

@@ -1,38 +1,37 @@
 <ion-content [fullscreen]="true" class="ion-padding">
   @if(dataSource) {
-  <ion-card class="ion-margin-top">
+  <div class="ion-margin-top">
     <ion-card-header>
       <ion-card-title>{{ dataSource.name }}</ion-card-title>
       <ion-card-subtitle>{{ dataSource.question }}</ion-card-subtitle>
     </ion-card-header>
 
     <!-- FORM VOTING -->
-    <ion-card-content *ngIf="!hasVoted || isEditing">
-      <ion-list>
-        <ion-radio-group
-          [(ngModel)]="selectedOptionId"
-          [ngModelOptions]="{ standalone: true }"
-        >
-          <ion-item *ngFor="let option of dataSource?.options">
-            <ion-radio slot="start" [value]="option.optionId"></ion-radio>
-            <ion-label>{{ option.name }}</ion-label>
-          </ion-item>
-          <div class="add-other ion-margin-top" (click)="addOptions()">
-            + Add Other Option
-          </div>
-        </ion-radio-group>
-      </ion-list>
 
-      <ion-button
-        expand="block"
-        class="mt-3"
-        [disabled]="!selectedOptionId()"
-        (click)="submitVote()"
-        mode="ios"
+    <ion-list>
+      <ion-radio-group
+        [(ngModel)]="selectedOptionId"
+        [ngModelOptions]="{ standalone: true }"
       >
-        {{ hasVoted ? 'Kirim Ulang' : 'Vote' }}
-      </ion-button>
-    </ion-card-content>
+        <ion-item *ngFor="let option of dataSource?.options">
+          <ion-radio slot="start" [value]="option.optionId"></ion-radio>
+          <ion-label>{{ option.name }}</ion-label>
+        </ion-item>
+        <div class="add-other ion-margin-top" (click)="addOptions()">
+          + Add Other Option
+        </div>
+      </ion-radio-group>
+    </ion-list>
+
+    <ion-button
+      expand="block"
+      class="mt-3"
+      [disabled]="!selectedOptionId()"
+      (click)="submitVote()"
+      mode="ios"
+    >
+      {{ hasVoted ? 'Resend' : 'Vote' }}
+    </ion-button>
 
     <!-- HASIL VOTE -->
     <!-- <ion-card-content *ngIf="hasVoted && !isEditing">
@@ -74,6 +73,8 @@
         Edit Vote
       </ion-button>
     </ion-card-content> -->
-  </ion-card>
-  } @else { Data not found }
+  </div>
+  } @else {
+  <app-empty-state></app-empty-state>
+  }
 </ion-content>

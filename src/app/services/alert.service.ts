@@ -26,4 +26,16 @@ export class AlertService {
 
     return alert.present();
   }
+
+  async presentAlertConfirm(header = 'Confirm', message = 'Are you sure?') {
+    const alert = await this.alertController.create({
+      header,
+      message,
+      buttons: ['Cancel', 'Oke'],
+    });
+
+    await alert.present();
+    const { role } = await alert.onDidDismiss();
+    return role === 'cancel' ? false : true;
+  }
 }

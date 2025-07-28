@@ -1,20 +1,95 @@
-import { Component, OnInit } from '@angular/core';
+import { CdkTableModule } from '@angular/cdk/table';
 import { CommonModule } from '@angular/common';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { IonicModule } from '@ionic/angular';
+import { AlertService } from 'src/app/services/alert.service';
+import { RequestPagingDto } from 'src/app/services/api/base-api.dto';
+import { ResponseGetUsersDto } from 'src/app/services/api/user-api/user.dto';
+import { LoadingService } from 'src/app/services/loading.service';
+import { ModalService } from 'src/app/services/modal.service';
+import { UsersService } from 'src/app/services/users.service';
+import { EmptyStateComponent } from 'src/app/shared/components/empty-state/empty-state.component';
+import { UsersCreatePage } from './users-create/users-create.page';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-users',
   templateUrl: './users.page.html',
   styleUrls: ['./users.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [IonicModule, CommonModule, FormsModule, CdkTableModule, EmptyStateComponent]
 })
-export class UsersPage implements OnInit {
+export class UsersPage implements OnInit, OnDestroy {
+  readonly usersService = inject(UsersService);
+  readonly alertService = inject(AlertService);
+  readonly loadingService = inject(LoadingService);
+  readonly modalService = inject(ModalService);
 
-  constructor() { }
+  displayedColumns = ['index', 'name', 'email', 'role', 'actions'];
+  dataSource: ResponseGetUsersDto[] = [];
+  searchTerm = '';
+  queryParams: RequestPagingDto = { page: 1, limit: 50 };
+  destroy$ = new Subject<void>();
 
   ngOnInit() {
+    this.getUsers();
+
+    // listener load list
+    this.usersService.loadList$.pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.getUsers());
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  async getUsers() {
+    try {
+      await this.loadingService.showLoading();
+      const result = await this.usersService.getUsers(this.queryParams);
+      this.dataSource = result.data;
+    } catch (error: any) {
+      this.alertService.presentAlertError(error?.error?.message)
+    } finally {
+      this.loadingService.hideLoading();
+    }
+  }
+
+  handleSearch(value: string) {
+    this.queryParams.search = value;
+    this.queryParams.page = 1;
+    this.getUsers();
+  }
+
+  onAdd() {
+    this.modalService.openModal(UsersCreatePage)
+  }
+
+  onEdit(row: ResponseGetUsersDto) {
+    console.log('Edit', row);
+    this.modalService.openModal(UsersCreatePage, { user: row })
+  }
+
+  async onDelete(row: ResponseGetUsersDto) {
+    const confirm = await this.alertService.presentAlertConfirm('Confirm', 'Are you sure delete this data?');
+
+    if (confirm) {
+      try {
+        await this.loadingService.showLoading('Deleting...')
+        await this.usersService.deleteUser(row._id);
+        this.getUsers();
+        this.alertService.presentAlertSuccess('Successfully deleted');
+      } catch (error: any) {
+        this.alertService.presentAlertError(error?.error?.message);
+      } finally {
+        this.loadingService.hideLoading();
+      }
+    }
+  }
+
+  trackById(_: number, item: ResponseGetUsersDto) {
+    return item._id;
+  }
 }

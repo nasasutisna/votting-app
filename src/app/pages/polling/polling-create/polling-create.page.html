@@ -58,6 +58,7 @@
       class="ion-margin-top"
       type="submit"
       color="primary"
+      [disabled]="!formData.name || !formData.deadlineVote || !formData.question"
       (click)="save()"
     >
       Save

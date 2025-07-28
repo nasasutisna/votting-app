@@ -5,7 +5,7 @@ import { provideHttpClient } from '@angular/common/http';
 
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
-import { checkmarkCircle, lockClosedOutline, logInOutline, logOutOutline, mailOutline, personOutline, pieChartOutline } from 'ionicons/icons';
+import { checkmarkCircle, lockClosedOutline, logInOutline, logOutOutline, mailOutline, personOutline, pieChartOutline, closeCircleOutline } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
 
 bootstrapApplication(AppComponent, {
@@ -25,4 +25,5 @@ addIcons({
   'log-in-outline': logInOutline,
   'log-out-outline': logOutOutline,
   'pie-chart-outline': pieChartOutline,
+  'close-circle-outline': closeCircleOutline,
 });

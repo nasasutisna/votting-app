@@ -1,0 +1,16 @@
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: var(--ion-color-medium);
+
+  .icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--ion-color-primary);
+  }
+
+  p {
+    font-size: 1.1rem;
+    margin: 0;
+  }
+}

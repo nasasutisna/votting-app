@@ -7,7 +7,7 @@ export class LoadingService {
   private loading: any;
   constructor(private loadingCtrl: LoadingController) { }
 
-  async showLoading(message = 'Harap tunggu sebentar') {
+  async showLoading(message = 'Please wait...') {
     this.loading = await this.loadingCtrl.create({
       message,
       duration: 3000,
@@ -17,6 +17,6 @@ export class LoadingService {
   }
 
   hideLoading() {
-    if (this.loading) this.loading.dismiss()
+    if (this.loading) return this.loading.dismiss()
   }
 }

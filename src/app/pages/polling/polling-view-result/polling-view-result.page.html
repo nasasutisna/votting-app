@@ -1,0 +1,70 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Polling Result</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <!-- HASIL VOTE -->
+  <ion-card-content>
+    @if(dataSource) {
+    <ion-list>
+      <ion-item *ngFor="let option of dataSource.options; let i = index">
+        <ion-label class="w-full">
+          <div class="flex justify-between items-center mb-1">
+            <strong
+              [ngClass]="{
+              'text-primary': userVoteId === option.optionId,
+              'font-bold': userVoteId === option.optionId
+            }"
+            >
+              {{ option.name }}
+              <ion-icon
+                *ngIf="userVoteId === option.optionId"
+                name="checkmark-circle"
+                class="ml-1"
+                color="primary"
+              ></ion-icon>
+            </strong>
+            <span class="percentage"> {{ option.percentage}}% </span>
+          </div>
+
+          <ion-progress-bar
+            [value]="option.percentage"
+            [color]="option.totalVoted === maxVote ? 'primary' : 'secondary'"
+          ></ion-progress-bar>
+
+          <div class="text-sm text-gray-500 mt-1">
+            {{ option.totalVoted }} vote
+          </div>
+
+          <!-- Toggle Respondents -->
+          <div *ngIf="option.usersVoted.length > 0" class="mt-2">
+            <div
+              class="toggle-respondent"
+              color="secondary"
+              (click)="toggleRespondent(i)"
+            >
+              {{ showRespondents[i] ? 'Hide' : 'View' }} Responden
+            </div>
+
+            <ion-list
+              *ngIf="showRespondents[i]"
+              class="border border-gray-200 rounded p-2 mt-1 bg-gray-50"
+            >
+              <ion-item
+                *ngFor="let respondent of option.usersVoted"
+                lines="none"
+              >
+                <ion-label class="text-sm">{{ respondent.fullName }}</ion-label>
+              </ion-item>
+            </ion-list>
+          </div>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    } @else {
+      <app-empty-state message="Data not found"></app-empty-state>
+    }
+  </ion-card-content>
+</ion-content>

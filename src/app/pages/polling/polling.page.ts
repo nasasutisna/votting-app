@@ -14,13 +14,16 @@ import { HeaderComponent } from 'src/app/shared/components/header/header.compone
 import { PollingCreatePage } from './polling-create/polling-create.page';
 import { Subject, takeUntil } from 'rxjs';
 import { PollingVotePage } from './polling-vote/polling-vote.page';
+import dayjs from 'dayjs';
+import { EmptyStateComponent } from 'src/app/shared/components/empty-state/empty-state.component';
+import { PollingViewResultPage } from './polling-view-result/polling-view-result.page';
 
 @Component({
   selector: 'app-polling',
   templateUrl: './polling.page.html',
   styleUrls: ['./polling.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, CdkTableModule, HeaderComponent]
+  imports: [IonicModule, CommonModule, FormsModule, CdkTableModule, HeaderComponent, EmptyStateComponent]
 })
 export class PollingPage implements OnInit, OnDestroy {
   readonly voteService = inject(VoteService);
@@ -31,10 +34,25 @@ export class PollingPage implements OnInit, OnDestroy {
 
   public displayedColumns = ['index', 'name', 'question', 'deadlineVote', 'isActived', 'actions'];
   public dataSource: ResponsePollListDto[] = [];
-  public queryParams: RequestPagingDto = { page: 1, limit: 100, search: '' }
+  public queryParams: RequestPagingDto = { page: 1, limit: 50, search: '' }
   public searchTerm = '';
 
   public destroy$ = new Subject<void>();
+
+  currentPage = 0;
+  totalPages = 1;
+
+  nextPage() {
+    if (this.currentPage < this.totalPages - 1) {
+      this.currentPage++;
+    }
+  }
+
+  prevPage() {
+    if (this.currentPage > 0) {
+      this.currentPage--;
+    }
+  }
 
   ngOnInit() {
     this.getPollingList();
@@ -50,7 +68,11 @@ export class PollingPage implements OnInit, OnDestroy {
     try {
       await this.loadingService.showLoading();
       const result = await this.voteService.getListPoll(this.queryParams);
-      this.dataSource = result.data;
+      this.totalPages = result.page;
+      this.dataSource = result.data.map(item => {
+        item.deadlineVote = dayjs(item.deadlineVote).format('DD, MMMM YYYY HH:mm')
+        return item;
+      });
     } catch (error: any) {
       this.alertService.presentAlertError(error?.error?.message);
     } finally {
@@ -69,9 +91,21 @@ export class PollingPage implements OnInit, OnDestroy {
     // Arahkan ke halaman edit atau buka modal
   }
 
-  onDelete(row: ResponsePollListDto) {
-    console.log('Delete', row);
+  async onDelete(row: ResponsePollListDto) {
+    const confirm = await this.alertService.presentAlertConfirm('Confirm', 'Are you sure delete this data?');
     // Konfirmasi dan hapus data
+    if (confirm) {
+      try {
+        await this.loadingService.showLoading('Deleting...')
+        await this.voteService.deletePoll(row._id);
+        this.voteService.loadList$.next();
+        this.alertService.presentAlertSuccess('Successfully deleted');
+      } catch (error: any) {
+        this.alertService.presentAlertError(error?.error?.message);
+      } finally {
+        this.loadingService.hideLoading();
+      }
+    }
   }
 
   onAdd() {
@@ -85,5 +119,10 @@ export class PollingPage implements OnInit, OnDestroy {
 
   onVote(row: ResponsePollListDto) {
     this.modalService.openModal(PollingVotePage, { params: row })
+  }
+
+  onViewResult(id: string) {
+    console.log(id)
+    this.modalService.openModal(PollingViewResultPage, { id })
   }
 }

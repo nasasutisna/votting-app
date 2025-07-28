@@ -21,8 +21,13 @@ export class PollApiService {
   }
 
   getResult(id: string) {
-    const url = `${this.model}/${id}`;
+    const url = `${this.model}/result/${id}`;
     return this.baseApiService.httpGet<ResponseData<ResponseGetResultDto>>(url);
+  }
+
+  getDetail(id: string) {
+    const url = `${this.model}/detail/${id}`;
+    return this.baseApiService.httpGet<ResponseData<ResponsePollListDto>>(url);
   }
 
   addPoll(body: RequestAddPollDto) {

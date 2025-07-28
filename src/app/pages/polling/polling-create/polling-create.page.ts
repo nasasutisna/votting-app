@@ -9,6 +9,7 @@ import { VoteService } from 'src/app/services/vote.service';
 import { LoadingService } from 'src/app/services/loading.service';
 import { Router } from '@angular/router';
 import { ModalService } from 'src/app/services/modal.service';
+import dayjs from 'dayjs';
 
 @Component({
   selector: 'app-polling-create',
@@ -48,7 +49,9 @@ export class PollingCreatePage implements OnInit {
   async save() {
     try {
       await this.loadingService.showLoading();
-      await this.voteService.addPoll(this.formData);
+      const body = this.formData;
+      body.deadlineVote = dayjs(this.formData.deadlineVote).toISOString();
+      await this.voteService.addPoll(body);
       this.voteService.loadList$.next();
       this.alertService.presentAlertSuccess('Successfully Saved');
       this.modalService.dismiss();

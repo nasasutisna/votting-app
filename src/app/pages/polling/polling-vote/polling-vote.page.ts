@@ -10,13 +10,14 @@ import { ModalService } from 'src/app/services/modal.service';
 import { VoteService } from 'src/app/services/vote.service';
 import { PollingAddOptionsPage } from '../polling-add-options/polling-add-options.page';
 import { Subject, takeUntil } from 'rxjs';
+import { EmptyStateComponent } from 'src/app/shared/components/empty-state/empty-state.component';
 
 @Component({
   selector: 'app-polling-vote',
   templateUrl: './polling-vote.page.html',
   styleUrls: ['./polling-vote.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [IonicModule, CommonModule, FormsModule, EmptyStateComponent]
 })
 export class PollingVotePage implements OnInit, OnDestroy {
 
@@ -37,18 +38,31 @@ export class PollingVotePage implements OnInit, OnDestroy {
   constructor() { }
 
   ngOnInit() {
+    console.log(this.params)
     if (this.params) {
-      this.dataSource = this.params;
+      this.getDetailPoll();
+      this.voteService.loadList$.pipe(takeUntil(this.destroy$)).subscribe(() => this.getDetailPoll())
     } else {
       this.getPollingList();
+      this.voteService.loadList$.pipe(takeUntil(this.destroy$)).subscribe(() => this.getPollingList())
     }
-
-    this.voteService.loadList$.pipe(takeUntil(this.destroy$)).subscribe(() => this.getPollingList())
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  async getDetailPoll() {
+    try {
+      await this.loadingService.showLoading();
+      const result = await this.voteService.getDetail(this.params?._id);
+      this.dataSource = result.data;
+    } catch (error: any) {
+      this.alertService.presentAlertError(error?.error?.message);
+    } finally {
+      this.loadingService.hideLoading();
+    }
   }
 
   async getPollingList() {

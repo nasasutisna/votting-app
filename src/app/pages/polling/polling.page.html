@@ -44,9 +44,7 @@
     <!-- Deadline Column -->
     <ng-container cdkColumnDef="deadlineVote">
       <cdk-header-cell *cdkHeaderCellDef> Deadline </cdk-header-cell>
-      <cdk-cell *cdkCellDef="let element">
-        {{ element.deadlineVote | date:'medium' }}
-      </cdk-cell>
+      <cdk-cell *cdkCellDef="let element"> {{ element.deadlineVote}} </cdk-cell>
     </ng-container>
 
     <!-- IsActive Column -->
@@ -65,8 +63,11 @@
       <cdk-cell *cdkCellDef="let element">
         @if(authService.isAdmin()){
         <div class="actions">
-          <ion-button fill="clear" size="small" (click)="onEdit(element)"
-            >Edit</ion-button
+          <ion-button
+            fill="clear"
+            size="small"
+            (click)="onViewResult(element?._id)"
+            >View Result</ion-button
           >
           <ion-button
             fill="clear"
@@ -76,7 +77,7 @@
             >Delete</ion-button
           >
         </div>
-        } @else { @if( element?.isActived) {
+        } @else {
         <ion-button
           fill="clear"
           color="primary"
@@ -84,15 +85,7 @@
           (click)="onVote(element)"
           >Vote</ion-button
         >
-        } @else {
-        <ion-button
-          fill="clear"
-          color="primary"
-          size="small"
-          (click)="onDelete(element)"
-          >View Result</ion-button
-        >
-        } }
+        }
       </cdk-cell>
     </ng-container>
 
@@ -102,13 +95,17 @@
 
     <!-- Empty State -->
     @if(dataSource.length) {
-    <div class="empty-state">
-      <ion-icon
-        name="folder-open-outline"
-        style="font-size: 24px; opacity: 0.5"
-      ></ion-icon>
-      <p style="margin-top: 8px; opacity: 0.6">Data not found</p>
-    </div>
+    <app-empty-state></app-empty-state>
     }
   </cdk-table>
+
+  <!-- <div class="pagination">
+    <ion-button fill="clear" (click)="prevPage()" [disabled]="currentPage === 0"
+      >Prev</ion-button
+    >
+    <ion-label color="medium">Page {{ currentPage + 1 }} / {{ totalPages }}</ion-label>
+    <ion-button fill="clear" (click)="nextPage()" [disabled]="currentPage >= totalPages - 1"
+      >Next</ion-button
+    >
+  </div> -->
 </ion-content>

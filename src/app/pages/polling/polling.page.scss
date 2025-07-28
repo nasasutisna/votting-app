@@ -71,3 +71,11 @@ cdk-header-cell:nth-child(1) {
 .searchbar {
   flex: 1;
 }
+
+.pagination {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: end;
+}
+
