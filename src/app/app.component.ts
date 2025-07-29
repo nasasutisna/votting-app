@@ -1,7 +1,7 @@
 
 import { Component, effect, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { IonApp, IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonRouterLink, IonRouterOutlet, IonSplitPane } from '@ionic/angular/standalone';
+import { IonApp, IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonRouterLink, IonRouterOutlet, IonSplitPane, } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { home, logInOutline } from 'ionicons/icons';
 import { AuthService } from './services/auth.service';
@@ -23,6 +23,7 @@ export class AppComponent {
 
   constructor() {
     effect(() => {
+      this.auth.getUser();
       this.auth.getIsAdmin();
       if (this.auth.isAdmin()) {
         this.appPages = [

@@ -1,80 +1,29 @@
 <ion-content [fullscreen]="true" class="ion-padding">
-  @if(dataSource) {
-  <div class="ion-margin-top">
-    <ion-card-header>
-      <ion-card-title>{{ dataSource.name }}</ion-card-title>
-      <ion-card-subtitle>{{ dataSource.question }}</ion-card-subtitle>
-    </ion-card-header>
+  @if (dataSource) {
+    <div class="ion-margin-top">
+      <ion-card-header>
+        <ion-card-subtitle>{{ dataSource.name }}</ion-card-subtitle>
+        <ion-card-title>{{ dataSource.question }}</ion-card-title>
+      </ion-card-header>
 
-    <!-- FORM VOTING -->
+      <!-- FORM VOTING -->
 
-    <ion-list>
-      <ion-radio-group
-        [(ngModel)]="selectedOptionId"
-        [ngModelOptions]="{ standalone: true }"
-      >
-        <ion-item *ngFor="let option of dataSource?.options">
-          <ion-radio slot="start" [value]="option.optionId"></ion-radio>
-          <ion-label>{{ option.name }}</ion-label>
-        </ion-item>
-        <div class="add-other ion-margin-top" (click)="addOptions()">
-          + Add Other Option
-        </div>
-      </ion-radio-group>
-    </ion-list>
-
-    <ion-button
-      expand="block"
-      class="mt-3"
-      [disabled]="!selectedOptionId()"
-      (click)="submitVote()"
-      mode="ios"
-    >
-      {{ hasVoted ? 'Resend' : 'Vote' }}
-    </ion-button>
-
-    <!-- HASIL VOTE -->
-    <!-- <ion-card-content *ngIf="hasVoted && !isEditing">
       <ion-list>
-        <ion-item *ngFor="let option of voteData.options">
-          <ion-label class="w-full">
-            <div class="flex justify-between items-center mb-1">
-              <strong
-                [ngClass]="{
-              'text-primary': userVoteId === option.id,
-              'font-bold': userVoteId === option.id
-            }"
-              >
-                {{ option.text }}
-                <ion-icon
-                  *ngIf="userVoteId === option.id"
-                  name="checkmark-circle"
-                  class="ml-1"
-                  color="primary"
-                ></ion-icon>
-              </strong>
-              <span
-                >{{ ((option.votes / voteData.totalVotes) * 100) |
-                number:'1.0-0' }}%</span
-              >
-            </div>
-            <ion-progress-bar
-              [value]="option.votes / voteData.totalVotes"
-              [color]="userVoteId === option.id ? 'primary' : 'medium'"
-            ></ion-progress-bar>
-            <div class="text-sm text-gray-500 mt-1">
-              {{ option.votes }} suara
-            </div>
-          </ion-label>
-        </ion-item>
+        <ion-radio-group [(ngModel)]="selectedOptionId" [ngModelOptions]="{ standalone: true }">
+          <ion-item *ngFor="let option of dataSource?.options">
+            <ion-radio labelPlacement="end" justify="start" [value]="option.optionId">
+              {{ option.name }}
+            </ion-radio>
+          </ion-item>
+          <div class="add-other ion-margin-top" (click)="addOptions()">+ Add Other Option</div>
+        </ion-radio-group>
       </ion-list>
 
-      <ion-button mode="ios" expand="block" fill="clear" (click)="editVote()">
-        Edit Vote
+      <ion-button expand="block" class="mt-3" [disabled]="!selectedOptionId()" (click)="submitVote()" mode="ios">
+        {{ hasVoted ? 'Resend' : 'Vote' }}
       </ion-button>
-    </ion-card-content> -->
-  </div>
+    </div>
   } @else {
-  <app-empty-state></app-empty-state>
+    <app-empty-state></app-empty-state>
   }
 </ion-content>

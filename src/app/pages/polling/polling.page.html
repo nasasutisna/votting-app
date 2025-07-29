@@ -6,19 +6,10 @@
     </div>
 
     <div class="toolbar-right">
-      @if(authService.isAdmin()){
-      <ion-button slot="end" fill="clear" (click)="onAdd()"
-        >+ Add New</ion-button
-      >
+      @if (authService.isAdmin()) {
+        <ion-button slot="end" fill="clear" (click)="onAdd()">+ Add New</ion-button>
       }
-      <ion-searchbar
-        mode="ios"
-        [(ngModel)]="searchTerm"
-        (ngModelChange)="handleSearch($event)"
-        [debounce]="1000"
-        placeholder="Search..."
-        class="searchbar"
-      ></ion-searchbar>
+      <ion-searchbar mode="ios" [(ngModel)]="searchTerm" (ngModelChange)="handleSearch($event)" [debounce]="1000" placeholder="Search..." class="searchbar"></ion-searchbar>
     </div>
   </div>
   <cdk-table [dataSource]="dataSource" class="table" [trackBy]="trackById">
@@ -44,81 +35,37 @@
     <!-- Deadline Column -->
     <ng-container cdkColumnDef="deadlineVote">
       <cdk-header-cell *cdkHeaderCellDef> Deadline </cdk-header-cell>
-      <cdk-cell *cdkCellDef="let element"> {{ element.deadlineVote}} </cdk-cell>
-    </ng-container>
-
-    <!-- IsActive Column -->
-    <ng-container cdkColumnDef="isActived">
-      <cdk-header-cell *cdkHeaderCellDef> Active </cdk-header-cell>
-      <cdk-cell *cdkCellDef="let element">
-        <ion-chip color="{{ element.isActived ? 'success' : 'danger' }}">
-          {{ element.isActived ? 'Yes' : 'No' }}
-        </ion-chip>
-      </cdk-cell>
+      <cdk-cell *cdkCellDef="let element"> {{ element.deadlineVote }} </cdk-cell>
     </ng-container>
 
     <!-- Actions Column -->
     <ng-container cdkColumnDef="actions">
       <cdk-header-cell *cdkHeaderCellDef> Actions </cdk-header-cell>
       <cdk-cell *cdkCellDef="let element">
-        @if(authService.isAdmin()){
-        <div class="actions">
-          <ion-button
-            fill="clear"
-            size="small"
-            color="secondary"
-            (click)="onAddOptions(element?._id)"
-            >Add Options</ion-button
-          >
-
-          <ion-button
-            fill="clear"
-            size="small"
-            (click)="onViewResult(element?._id)"
-            >View Result</ion-button
-          >
-
-          <ion-button
-            fill="clear"
-            color="danger"
-            size="small"
-            (click)="onDelete(element)"
-            >Delete</ion-button
-          >
-        </div>
+        @if (authService.isAdmin()) {
+          <div class="actions">
+            <ion-button fill="clear" size="small" color="secondary" (click)="onAddOptions(element?._id)">Add Options</ion-button>
+            <ion-button fill="clear" size="small" (click)="onViewResult(element?._id)">View Result</ion-button>
+            <ion-button fill="clear" color="danger" size="small" (click)="onDelete(element)">Delete</ion-button>
+          </div>
         } @else {
-        <ion-button
-          fill="clear"
-          color="primary"
-          size="small"
-          (click)="onVote(element)"
-          >Vote</ion-button
-        >
+          <ion-button fill="clear" color="primary" size="small" (click)="onVote(element)">Vote</ion-button>
         }
       </cdk-cell>
     </ng-container>
 
     <!-- Render Header and Row -->
     <cdk-header-row *cdkHeaderRowDef="displayedColumns"></cdk-header-row>
-    <cdk-row *cdkRowDef="let row; columns: displayedColumns;"></cdk-row>
+    <cdk-row *cdkRowDef="let row; columns: displayedColumns"></cdk-row>
   </cdk-table>
 
-  @if(!dataSource.length) {
-  <app-empty-state></app-empty-state>
+  @if (!dataSource.length) {
+    <app-empty-state></app-empty-state>
   }
 
   <div class="pagination">
-    <ion-button fill="clear" (click)="prevPage()" [disabled]="currentPage === 0"
-      >Prev</ion-button
-    >
-    <ion-label color="medium"
-      >Page {{ currentPage + 1 }} / {{ totalPage }}</ion-label
-    >
-    <ion-button
-      fill="clear"
-      (click)="nextPage()"
-      [disabled]="currentPage >= totalPage - 1"
-      >Next</ion-button
-    >
+    <ion-button fill="clear" (click)="prevPage()" [disabled]="currentPage === 0">Prev</ion-button>
+    <ion-label color="medium">Page {{ currentPage + 1 }} / {{ totalPage }}</ion-label>
+    <ion-button fill="clear" (click)="nextPage()" [disabled]="currentPage >= totalPage - 1">Next</ion-button>
   </div>
 </ion-content>

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
@@ -15,7 +15,7 @@ import { LoadingService } from 'src/app/services/loading.service';
   standalone: true,
   imports: [IonicModule, FormsModule, CommonModule]
 })
-export class LoginPage {
+export class LoginPage implements OnInit, OnDestroy {
   readonly router = inject(Router);
   readonly deviceService = inject(DeviceService);
   readonly alertService = inject(AlertService);
@@ -25,11 +25,25 @@ export class LoginPage {
   public password = '';
   public email = '';
 
+  ngOnInit(): void {
+    history.pushState(null, '', location.href);
+    window.addEventListener('popstate', this.handleBackBlock);
+  }
+
+  ngOnDestroy() {
+    window.removeEventListener('popstate', this.handleBackBlock);
+  }
+
   onLogin() {
     this.auth.login(this.email, this.password);
   }
 
+
   register() {
     this.router.navigate(['/register'])
+  }
+
+  handleBackBlock = () => {
+    history.pushState(null, '', location.href); // dorong lagi agar tetap di sini
   }
 }

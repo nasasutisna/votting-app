@@ -6,3 +6,7 @@
 .add-other:hover {
   color: black;
 }
+
+:host ::ng-deep ion-radio.radio-wrapper {
+  float: left;
+}

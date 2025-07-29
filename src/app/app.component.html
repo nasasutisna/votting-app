@@ -1,33 +1,25 @@
 <ion-app>
   <ion-split-pane contentId="main-content">
-    @if(auth.isAuthenticated()){
-    <ion-menu contentId="main-content" type="overlay">
-      <ion-content>
-        <ion-list id="inbox-list">
-          <ion-list-header class="ion-margin-bottom">Votting</ion-list-header>
-
-          @for (p of appPages; track p; let i = $index) {
-          <ion-menu-toggle auto-hide="false">
-            <ion-item
-              routerDirection="root"
-              [routerLink]="[p.url]"
-              (click)="openPage(p)"
-              lines="none"
-              detail="false"
-              routerLinkActive="selected"
-            >
-              <ion-icon
-                aria-hidden="true"
-                slot="start"
-                [name]="p.icon"
-              ></ion-icon>
-              <ion-label>{{ p.title }}</ion-label>
-            </ion-item>
-          </ion-menu-toggle>
-          }
-        </ion-list>
-      </ion-content>
-    </ion-menu>
+    @if (auth.isAuthenticated()) {
+      <ion-menu contentId="main-content" type="overlay">
+        <ion-content>
+          <ion-list id="inbox-list" style="padding-top: 0px;">
+            <ion-list-header color="primary" class="ion-padding ion-text-center ion-margin-bottom">E-Voting</ion-list-header>
+            <ion-list-header class="welcome">Welcome, {{auth.currentUser()?.fullName}}</ion-list-header>
+            <ion-list-header class="email ion-margin-bottom">{{auth.currentUser()?.email}}</ion-list-header>
+            
+            <!-- <p class="welcome ion-margin-start">Welcome, {{auth.currentUser()?.fullName}}</p> -->
+            @for (p of appPages; track p; let i = $index) {
+              <ion-menu-toggle auto-hide="false">
+                <ion-item routerDirection="root" [routerLink]="[p.url]" (click)="openPage(p)" lines="none" detail="false" routerLinkActive="selected">
+                  <ion-icon aria-hidden="true" slot="start" [name]="p.icon"></ion-icon>
+                  <ion-label>{{ p.title }}</ion-label>
+                </ion-item>
+              </ion-menu-toggle>
+            }
+          </ion-list>
+        </ion-content>
+      </ion-menu>
     }
     <ion-router-outlet id="main-content"></ion-router-outlet>
   </ion-split-pane>

@@ -23,7 +23,7 @@ export class AuthService {
   readonly loadingService = inject(LoadingService);
   readonly alertService = inject(AlertService);
 
-  private currentUser = signal<ResponseGetUsersDto | null>(null);
+  public currentUser = signal<ResponseGetUsersDto | null>(null);
   public isAdmin = signal<boolean | null>(null);
 
   readonly authApi = inject(AuthApiService);

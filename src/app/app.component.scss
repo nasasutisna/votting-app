@@ -121,3 +121,14 @@ ion-note {
 ion-item.selected {
   --color: var(--ion-color-primary);
 }
+
+.welcome {
+  font-size: 18px!important;
+  font-weight: bold!important;
+
+}
+
+.email {
+  font-size: 14px!important;
+    color: var(--ion-color-medium)!important;
+}

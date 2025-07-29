@@ -11,35 +11,18 @@
         <ion-card-content>
           <ion-item lines="inset">
             <ion-icon name="mail-outline" slot="start"></ion-icon>
-            <ion-input
-              [(ngModel)]="email"
-              name="email"
-              type="email"
-              placeholder="Email"
-              required
-            ></ion-input>
+            <ion-input [(ngModel)]="email" name="email" type="email" placeholder="Email" required></ion-input>
           </ion-item>
 
           <ion-item lines="inset" class="ion-margin-top">
             <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
-            <ion-input
-              [(ngModel)]="password"
-              name="password"
-              type="password"
-              placeholder="Password"
-              required
-            ></ion-input>
+           
+            <ion-input [(ngModel)]="password" name="password" type="password" placeholder="Password" required>
+               <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+            </ion-input>
           </ion-item>
 
-          <ion-button
-            expand="block"
-            class="ion-margin-top"
-            type="submit"
-            color="primary"
-            [disabled]="!loginForm.valid"
-          >
-            Login
-          </ion-button>
+          <ion-button expand="block" class="ion-margin-top" type="submit" color="primary" [disabled]="!loginForm.valid"> Login </ion-button>
 
           <div class="ion-margin-top ion-margin-bottom">Don't have account? <span class="link" (click)="register()">Register</span></div>
         </ion-card-content>

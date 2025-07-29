@@ -33,7 +33,7 @@ export class PollingPage implements OnInit, OnDestroy {
   readonly authService = inject(AuthService);
   readonly modalService = inject(ModalService);
 
-  public displayedColumns = ['index', 'name', 'question', 'deadlineVote', 'isActived', 'actions'];
+  public displayedColumns = ['index', 'name', 'question', 'deadlineVote', 'actions'];
   public dataSource: ResponsePollListDto[] = [];
   public queryParams: RequestPagingDto = { page: 1, limit: 10, search: '' }
   public searchTerm = '';
